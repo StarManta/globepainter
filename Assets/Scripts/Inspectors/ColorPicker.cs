@@ -19,17 +19,20 @@ public class ColorPicker : BaseInspectorWindow {
 		}
 	}
 
-
-	public delegate void ColorPickCallback(Color newColor);
-	public void PickColor(ColorPickCallback callback) {
-		Activate();
-		storedCallback = callback;
+	public override bool CanEditField (object fieldData)
+	{
+		return (fieldData is OpenColorPicker);
 	}
-	private ColorPickCallback storedCallback;
+	OpenColorPicker myTarget;
+	public override void Activate (object target)
+	{
+		myTarget = (OpenColorPicker)target;
+		base.Activate (target);
+	}
+
 
 	public void PickColorAndClose(Color col) {
-		if (storedCallback != null) storedCallback(col);
-		storedCallback = null;
+		myTarget.SetColor(col);
 		Deactivate();
 	}
 }

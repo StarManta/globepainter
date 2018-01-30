@@ -56,6 +56,13 @@ public class LayerManager : MonoBehaviour {
 	public GlobeLayer[] GetLayers() {
 		return layers.ToArray();
 	}
+	public SaveLayerData[] GetLayerDatas() {
+		SaveLayerData[] rtn = new SaveLayerData[layers.Count];
+		for (int l=0; l<layers.Count;l++) {
+			rtn[l] = layers[l].layerData;
+		}
+		return rtn;
+	}
 	private List<GlobeLayer> layers;
 	public GlobeLayer gridLayer;
 	public int textureMapWidth = 4096;

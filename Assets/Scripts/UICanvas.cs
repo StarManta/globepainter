@@ -5,7 +5,8 @@ using UnityEngine.UI;
 
 public class UICanvas : MonoBehaviour {
 	public RectTransform mapView;
-	public RectTransform middleBar;
+	public RectTransform inspectorBar;
+	public RectTransform fileBar;
 	public RectTransform globeView;
 	public RectTransform toolbar;
 	public RectTransform layerWindow;
@@ -35,8 +36,10 @@ public class UICanvas : MonoBehaviour {
 		toolbar.sizeDelta = new Vector2(globeView.anchoredPosition.x, screenHeight - mapViewHeight);
 		layerWindow.anchoredPosition = new Vector2(0.5f * (screenWidth + globeViewSize), toolbar.anchoredPosition.y);
 		layerWindow.sizeDelta = toolbar.sizeDelta;
-		middleBar.anchoredPosition = new Vector2(toolbarWidth, mapViewHeight);
-		middleBar.sizeDelta = new Vector2(screenWidth - toolbarWidth * 2, middleBarHeight);
+		inspectorBar.anchoredPosition = new Vector2(toolbarWidth, mapViewHeight);
+		inspectorBar.sizeDelta = new Vector2(screenWidth - toolbarWidth * 2, middleBarHeight);
+		fileBar.anchoredPosition = new Vector2(toolbarWidth, globeView.anchoredPosition.y+globeView.sizeDelta.y);
+		fileBar.sizeDelta = new Vector2(globeView.sizeDelta.x, screenHeight - fileBar.anchoredPosition.y);
 	}
 
 	void OnValidate() {

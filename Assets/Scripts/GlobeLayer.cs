@@ -16,28 +16,34 @@ public class GlobeLayer : MonoBehaviour {
 	}
 
 	public RenderTexture myRenderTexture;
-	public bool paintable = true;
+	public bool paintable {
+		get {
+			return layerData.paintable;
+		}
+		set {
+			layerData.paintable = value;
+		}
+	}
 	public Color color {
 		set {
-			_color = value;
+			layerData.color = value;
+			compositingLayerMesh.material.color = value;
 			LayerManager.main.CompositeLayers();
 		}
 		get {
-			return _color;
+			return layerData.color;
 		}
 	}
-	private Color _color = Color.white;
 	public string layerName {
 		set {
-			_layerName = value;
+			layerData.name = value;
 			gameObject.name = value;
 			if (myRenderTexture != null) myRenderTexture.name = value;
 		}
 		get {
-			return _layerName;
+			return layerData.name;
 		}
 	}
-	private string _layerName = "New Layer";
 	public bool renderable {
 		get{
 			return compositingLayerMesh.enabled;
@@ -47,11 +53,21 @@ public class GlobeLayer : MonoBehaviour {
 			LayerManager.main.CompositeLayers();
 		}
 	}
+
+	public SaveLayerData layerData;
+
 	public Camera layerCamera;
 	public Transform compositingLayerParent;
 	public MeshRenderer compositingLayerMesh;
 
-	public void Initialize(int w, int h) {
+	public void Initialize(int w, int h, SaveLayerData loadingLayerData = null) {
+		if (loadingLayerData != null) {
+			layerData = loadingLayerData;
+		}
+		else {
+			layerData = new SaveLayerData();
+		}
+
 		myRenderTexture = new RenderTexture(w, h, 32);
 		myRenderTexture.name = layerName;
 		layerCamera.targetTexture = myRenderTexture;
@@ -59,6 +75,8 @@ public class GlobeLayer : MonoBehaviour {
 		layerCamera.transform.localPosition = LayerManager.main.GetCenter(-10f);
 		compositingLayerParent.transform.localPosition = LayerManager.main.GetCenter(0f);
 		compositingLayerParent.transform.localScale = LayerManager.main.GetScale();
+
+
 	}
 
 	public void RenderLayer() {

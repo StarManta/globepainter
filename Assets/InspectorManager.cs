@@ -21,6 +21,18 @@ public class InspectorManager : MonoBehaviour {
 		allInspectors.Add(win);
 	}
 
+	public void ActivateWindowFor(object someObject) {
+		bool didFindWindow = false;
+		foreach (BaseInspectorWindow thisWin in allInspectors) {
+			if (didFindWindow) {
+				thisWin.Deactivate();
+			}
+			else if (thisWin.CanEditField(someObject) ){ 
+				thisWin.Activate(someObject);
+				didFindWindow = true;
+			}
+		}
+	}
 	public void ActivateWindow(BaseInspectorWindow activatingWindow) {
 		foreach (BaseInspectorWindow thisWin in allInspectors) {
 			thisWin.gameObject.SetActive(thisWin == activatingWindow);

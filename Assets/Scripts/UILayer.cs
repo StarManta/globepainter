@@ -6,12 +6,12 @@ using UnityEngine.UI;
 public class UILayer : MonoBehaviour {
 	public GlobeLayer myLayer;
 	public Image colorIndicator;
-	public Text layerName;
+	public Text layerNameTextObj;
 	public Toggle layerEnabled;
 
 	public void SyncWithLayer() {
 		colorIndicator.color = myLayer.color;
-		layerName.text = myLayer.layerName;
+		layerNameTextObj.text = myLayer.layerName;
 		layerEnabled.isOn = myLayer.renderable;
 	}
 	public void SetPaintable(bool isPaintable) {
@@ -19,5 +19,18 @@ public class UILayer : MonoBehaviour {
 	}
 	public void SetRenderable(bool isRenderable) {
 		myLayer.renderable = isRenderable;
+	}
+	public string layerName {
+		get {
+			return myLayer.layerName;
+		}
+		set {
+			myLayer.layerName = value;
+			layerNameTextObj.text = value;
+		}
+	}
+
+	public void OpenInspector() {
+		InspectorManager.main.ActivateWindowFor(this);
 	}
 }
