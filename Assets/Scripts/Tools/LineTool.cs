@@ -4,10 +4,15 @@ using UnityEngine;
 
 public class LineTool : BaseTool {
 	Vector2 lastPoint = Vector2.zero;
+	Vector2[] lastPointsCycle = new Vector2[2];
+	int currentLPIndex = 0;
 	public float interval = 0.01f;
 	public override void StartUsingTool (Vector2 point)
 	{
 		lastPoint = point;
+		for (int p=0;p<lastPointsCycle.Length;p++) {
+			lastPointsCycle[p] = point;
+		}
 		DragTool(point, 1f, true);
 		base.StartUsingTool (point);
 	}
@@ -23,10 +28,12 @@ public class LineTool : BaseTool {
 			lastPoint -= new Vector2(1f, 0f);
 		}
 		LineBrush.main.rendererEnabled = true;
-		LineBrush.main.SetUVPositions(lastPoint, point);
+		LineBrush.main.SetUVPositions(lastPointsCycle);
 		currentLayer.RenderLayer();
 		LineBrush.main.rendererEnabled = false;
 		lastPoint = point;
+		lastPointsCycle[currentLPIndex] = point;
+		currentLPIndex = (currentLPIndex + 1) % lastPointsCycle.Length;
 		base.DragTool (point, pressure, isGlobeView);
 	}
 }
